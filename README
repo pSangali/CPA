@@ -1,1 +1,103 @@
+Nesse README explicarei cada ponto do trabalho começando pelo código:
 
+1- *Importações e Preparação* (aqui estamos listando todas as "ferramentas" que utilizamos).
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+import time, json, re
+
+2- *Abrindo o navegador*
+driver = webdriver.Chrome() 
+Abre o navegador Chrome de forma automática.
+
+3- *Entrando no site do IMDb*
+driver.get('https://www.imdb.com/')
+Acessa o site do IMDb.
+
+4- *Navegando até a lista das 250 melhores séries*
+driver.find_element(By.ID, 'imdbHeader-navDrawerOpen').click()
+time.sleep(1)
+driver.find_element(By.XPATH, '//label[@aria-label="Expand TV Shows Nav Links"]').click()
+time.sleep(1)
+driver.find_element(By.XPATH, '//a[@href="/chart/toptv/?ref_=nv_tvv_250"]').click()
+Abre o menu, entra em “TV Shows” e clica na lista “Top 250 Séries”.
+
+5- *Coletando as séries listadas*
+sequencia_series = driver.find_elements(By.CSS_SELECTOR, "li.ipc-metadata-list-summary-item")
+Pega todos os itens da lista (cada série).
+
+6- *Pegando informações básicas de cada série*
+series_list = []
+for serie in sequencia_series[:250]:
+    titulo = re.sub(r'^\d+\.\s*', '', serie.find_element(By.CSS_SELECTOR, "h3").text.strip())
+    link = serie.find_element(By.TAG_NAME, "a").get_attribute("href")
+    
+    ano, rating = None, None
+    Ano = serie.find_elements(By.CSS_SELECTOR, ".cli-title-metadata-item:nth-child(1)")
+    if Ano:
+        match = re.search(r'(\d{4})', Ano[0].text)
+        if match: year = int(match.group(1))
+
+    Rating = serie.find_elements(By.CSS_SELECTOR, ".ipc-rating-star--imdb")
+    if Rating:
+        match = re.search(r'(\d+[.,]\d+)', Rating[0].get_attribute("aria-label") or Rating[0].text)
+        if match: rating = float(match.group(1).replace(',', '.'))
+
+    series_list.append({
+        "titulo": titulo, "ano_lancamento": ano,
+        "nota_imdb": rating, "link": link
+    })
+
+Para cada série:
+Pega o título, ano de lançamento, nota no IMDb e o link da série.
+Organiza isso tudo num dicionário e guarda numa lista.
+
+7- *Acessando a página de cada série pra pegar mais dados*
+final_data = []
+for i in series_list:
+    driver.get(i["link"])
+    time.sleep(3)
+Visita a página de cada série e espera carregar.
+
+8- *Pegando popularidade, elenco e temporadas*
+ pop, elenco, temp = None, [], None
+
+    # Popularidade
+    Pop = driver.find_elements(By.CSS_SELECTOR, "[data-testid='hero-rating-bar__popularity'] .sc-507c0d69-0")
+    if Pop:
+        match = re.search(r'(\d+)', Pop[0].text)
+        if match: pop = int(match.group(1))
+    
+    # Elenco
+    lista_elenco = driver.find_elements(By.CSS_SELECTOR, "[data-testid='title-cast-item']")
+    for x in lista_elenco[:10]:
+        actor = x.find_element(By.CSS_SELECTOR, "[data-testid='title-cast-item__actor']").text.strip()
+        personagens = x.find_elements(By.CSS_SELECTOR, "[data-testid='title-cast-item__character']")
+        character = personagens[0].text.strip() if personagens else "Character not specified"
+        elenco.append({"ator": actor, "personagem": character})
+
+    # Temporadas (inglês ou português)
+    fonte = driver.page_source
+    for t in [r'(\d+)\s+season', r'(\d+)\s+temporada']:
+        match = re.search(t, fonte, re.IGNORECASE)
+        if match:
+            temp = int(match.group(1))
+            break
+
+Dentro da página de cada série:
+Coleta a popularidade.
+Pega os 10 primeiros atores com seus personagens.
+descobre o número de temporadas olhando o código da página.
+
+9- *Salvando os dados no arquivo*
+  i.update({"popularidade": pop, "elenco": elenco, "temporadas": temp})
+    final_data.append(i)
+    with open("top_250_series_imdb.json", "w", encoding="utf-8") as f:
+        json.dump(final_data, f, ensure_ascii=False, indent=4)
+    time.sleep(2)
+
+Atualiza os dados da série com elenco, temporadas e popularidade. 
+Depois, salva tudo (em formato JSON) no arquivo top_250_series_imdb.json.
+
+10- *Final (fecha o navegador no final do processo).
+driver.quit()
