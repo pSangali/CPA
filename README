@@ -1,4 +1,5 @@
 Nesse README explicarei cada ponto do trabalho começando pelo código:
+Para rodar o código tem que executar (pip install selenium)
 
 1- *Importações e Preparação* (aqui estamos listando todas as "ferramentas" que utilizamos).
 from selenium import webdriver
