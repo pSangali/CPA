@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Consulta Brasileirão</title>
+</head>
+<body>
+  <h1>Consulta API Brasileirão</h1>
+
+  <h2>Ver jogos entre dois times</h2>
+  <label for="time1">Time 1:</label>
+  <input type="text" id="time1" />
+  <label for="time2">Time 2:</label>
+  <input type="text" id="time2" />
+  <button onclick="buscarConfronto()">Buscar</button>
+
+  <pre id="resultado"></pre>
+
+  <script>
+    function buscarConfronto() {
+      const time1 = document.getElementById('time1').value;
+      const time2 = document.getElementById('time2').value;
+
+      fetch(`http://localhost:5000/confronto?time1=${time1}&time2=${time2}`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('resultado').textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(error => {
+          document.getElementById('resultado').textContent = 'Erro: ' + error;
+        });
+    }
+  </script>
+</body>
+</html>
