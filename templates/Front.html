@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>API Brasileirão</title>
+</head>
+<body>
+  <h1>API Brasileirão - Operações</h1>
+
+  <label for="operacao">Tipo de operação:</label>
+  <select id="operacao" onchange="atualizarMetodos()">
+    <option value="">--Selecione--</option>
+    <option value="consulta">Consulta</option>
+    <option value="inserir">Inserir</option>
+    <option value="atualizar">Atualizar</option>
+    <option value="deletar">Deletar</option>
+    <option value="filtrar">Filtrar Dados</option>
+  </select>
+
+  <br><br>
+
+  <label for="metodo">Método:</label>
+  <select id="metodo" onchange="atualizarCampos()">
+    <option value="">--Selecione uma operação primeiro--</option>
+  </select>
+
+  <div id="campos"></div>
+
+  <button onclick="executar()">Executar</button>
+
+  <h2>Resultado:</h2>
+  <pre id="resultado"></pre>
+
+  <script>
+    function atualizarMetodos() {
+      const operacao = document.getElementById("operacao").value;
+      const metodo = document.getElementById("metodo");
+      metodo.innerHTML = "";
+
+      if (operacao === "consulta") {
+        metodo.innerHTML = `
+          <option value="">--Selecione--</option>
+          <option value="gols">Gols do time</option>
+          <option value="confronto">Confronto entre dois times</option>
+          <option value="estado">Times por estado</option>
+          <option value="Time">Informações do time</option>
+          <option value="valor">Jogos com número de gols</option>
+          <option value="linhas">Primeiras linhas do dataset</option>
+          <option value="listar">Listar todos os dados</option>
+        `;
+      } else if (operacao === "inserir") {
+        metodo.innerHTML = `<option value="inserir">Inserir novo dado</option>`;
+      } else if (operacao === "atualizar") {
+        metodo.innerHTML = `<option value="atualizar">Atualizar dado</option>`;
+      } else if (operacao === "deletar") {
+        metodo.innerHTML = `<option value="deletar">Deletar dado</option>`;
+      } else if (operacao === "filtrar") {
+        metodo.innerHTML = `<option value="filtrar">Filtrar dados por JSON</option>`;
+      }
+      atualizarCampos();
+    }
+
+    function atualizarCampos() {
+      const operacao = document.getElementById("operacao").value;
+      const metodo = document.getElementById("metodo").value;
+      const campos = document.getElementById("campos");
+      campos.innerHTML = "";
+
+      if (operacao === "consulta") {
+        if (metodo === "gols" || metodo === "Time") {
+          campos.innerHTML = `<input id="campo1" placeholder="Nome do time" />`;
+        } else if (metodo === "confronto") {
+          campos.innerHTML = `
+            <input id="campo1" placeholder="Time 1" />
+            <input id="campo2" placeholder="Time 2" />
+          `;
+        } else if (metodo === "estado") {
+          campos.innerHTML = `<input id="campo1" placeholder="UF (ex: SP)" />`;
+        } else if (metodo === "valor" || metodo === "linhas") {
+          campos.innerHTML = `<input id="campo1" type="number" placeholder="Número (ex: 5)" />`;
+        }
+      } else if (operacao === "inserir") {
+        campos.innerHTML = `<textarea id="jsonData" rows="6" cols="50" placeholder='{"time": "Palmeiras", "gols": 2, ...}'></textarea>`;
+      } else if (operacao === "atualizar") {
+        campos.innerHTML = `
+          <input id="campo1" type="number" placeholder="Índice do dado" />
+          <textarea id="jsonData" rows="6" cols="50" placeholder='{"time": "Corinthians", "gols": 1, ...}'></textarea>
+        `;
+      } else if (operacao === "deletar") {
+        campos.innerHTML = `<input id="campo1" type="number" placeholder="Índice do dado a deletar" />`;
+      } else if (operacao === "filtrar") {
+        campos.innerHTML = `<textarea id="jsonData" rows="6" cols="50" placeholder='{"home_team": "Palmeiras", "away_team_state": "SP"}'></textarea>`;
+      }
+    }
+
+    async function executar() {
+      const operacao = document.getElementById("operacao").value;
+      const metodo = document.getElementById("metodo").value;
+      const campo1 = document.getElementById("campo1")?.value;
+      const campo2 = document.getElementById("campo2")?.value;
+      const jsonData = document.getElementById("jsonData")?.value;
+      let url = "";
+      let options = { method: "GET" };
+
+      try {
+        if (operacao === "consulta") {
+          switch (metodo) {
+            case "gols":
+              url = `/gols/${encodeURIComponent(campo1)}`;
+              break;
+            case "confronto":
+              url = `/confronto?time1=${encodeURIComponent(campo1)}&time2=${encodeURIComponent(campo2)}`;
+              break;
+            case "estado":
+              url = `/estado/${encodeURIComponent(campo1)}`;
+              break;
+            case "Time":
+              url = `/Time/${encodeURIComponent(campo1)}`;
+              break;
+            case "valor":
+              url = `/gols/${encodeURIComponent(campo1)}/valor`;
+              break;
+            case "linhas":
+              url = `/linhas/${encodeURIComponent(campo1)}`;
+              break;
+            case "listar":
+              url = `/listar`;
+              break;
+          }
+        } else if (operacao === "inserir") {
+          url = `/inserir`;
+          options = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: jsonData
+          };
+        } else if (operacao === "atualizar") {
+          url = `/atualizar/${campo1}`;
+          options = {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: jsonData
+          };
+        } else if (operacao === "deletar") {
+          url = `/deletar/${campo1}`;
+          options = { method: "DELETE" };
+        } else if (operacao === "filtrar") {
+          url = `/filtrar`;
+          options = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: jsonData
+          };
+        }
+
+        const resposta = await fetch(url, options);
+        const dados = await resposta.json();
+        document.getElementById("resultado").innerText = JSON.stringify(dados, null, 2);
+      } catch (erro) {
+        document.getElementById("resultado").innerText = "Erro na operação: " + erro;
+      }
+    }
+  </script>
+</body>
+</html>

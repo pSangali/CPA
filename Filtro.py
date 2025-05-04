@@ -3,30 +3,32 @@ import pandas as pd, numpy as np, matplotlib.pyplot as plt
 #filtrar os datasest e possiveis perguntas
 
 #le o dataset
-brasil = pd.read_csv("DataSets/Brasileirao_Matches.csv")
+#brasil = pd.read_csv("DataSets/Brasileirao_Matches.csv")
 #exclui colunas "inuteis", e exclui valores ausentes
-brasil = brasil.drop(["season", "round"], axis=1).dropna()
+#brasil = brasil.drop(["season", "round"], axis=1).dropna()
 #deixa só ano/mes/dia
-brasil_ano = brasil["datetime"].map(lambda x: str(x)[:10])
+#brasil_ano = brasil["datetime"].map(lambda x: str(x)[:10])
 #deixa só nome do time
-brasil_times = brasil[["home_team", "away_team"]].map(lambda x: x[:-3])
+# = brasil[["home_team", "away_team"]].map(lambda x: x[:-3])
 #slado de gols
-goals = brasil[["home_goal", "home_team_state", "away_goal", "away_team_state"]]
+#goals = brasil[["home_goal", "home_team_state", "away_goal", "away_team_state"]]
 #junta tudo
-brasil = pd.concat([brasil_ano, brasil_times, goals], axis=1)
-
-
-#team = brasil[["home_team", "away_team"]]
-#goals = brasil[["home_goal", "away_goal"]]
-#team_goal = brasil_ano[["home_team","home_goal", "away_team", "away_goal"]]
+# = pd.concat([brasil_ano, brasil_times, goals], axis=1)
 
 #utilizar np para calcular e o plt para "mostrar" com os metodos para chamar dps
 class Time:
-    def __init__(self, brasil):
+    def __init__(self):
+        brasil = pd.read_csv("DataSets/Brasileirao_Matches.csv")
+        brasil = brasil.drop(["season", "round"], axis=1).dropna()
+        brasil_ano = brasil["datetime"].map(lambda x: str(x)[:10])
+        brasil_times = brasil[["home_team", "away_team"]].map(lambda x: x[:-3])
+        goals = brasil[["home_goal", "home_team_state", "away_goal", "away_team_state"]]
+        brasil = pd.concat([brasil_ano, brasil_times, goals], axis=1)
+
         self.brasil = brasil
 
-    #me da o total de gols do time escolhido detodo o periodo
     def total_team_goals(self, team_name):
+        "me da o total de gols do time escolhido detodo o periodo"
         gols_casa = int(np.sum(self.brasil[self.brasil['home_team'] == team_name]['home_goal']))
         gols_fora = int(np.sum(self.brasil[self.brasil['away_team'] == team_name]['away_goal']))
         total = gols_casa + gols_fora
@@ -35,8 +37,9 @@ class Time:
             "total_gols": total
         }
 
-    # retorna as datas dos jogos entre 2 times
+
     def team(self, team_name1, team_name2):
+        "retorna as datas dos jogos entre 2 times"
         jogos = self.brasil[
             ((self.brasil['home_team'] == team_name1) & (self.brasil['away_team'] == team_name2)) |
             ((self.brasil['home_team'] == team_name2) & (self.brasil['away_team'] == team_name1))
@@ -56,8 +59,9 @@ class Time:
             "jogos": lista_jogos
         }
 
-    # lista todos os times de um estado específico
+
     def state(self, estado):
+        "lista todos os times de um estado específico"
         estado = estado.upper()
         times_casa = self.brasil[self.brasil['home_team_state'] == estado]['home_team']
         times_fora = self.brasil[self.brasil['away_team_state'] == estado]['away_team']
@@ -68,8 +72,9 @@ class Time:
             "times": times
         }
 
-    # retorna o número específico de gols de todos os times
+
     def mostraValor(self, value):
+        "retorna o número específico de gols de todos os times"
         value = int(value)
         jogos = self.brasil[(self.brasil['home_goal'] == value) | (self.brasil['away_goal'] == value)]
         lista_jogos = [
@@ -87,8 +92,9 @@ class Time:
             "jogos": lista_jogos
         }
 
-    # mostra todos os jogos do time específico
+
     def mostraNome(self, team_name):
+        " mostra todos os jogos do time específico"
         jogos = self.brasil[(self.brasil['home_team'] == team_name) | (self.brasil['away_team'] == team_name)]
         lista_jogos = [
             {
@@ -102,8 +108,9 @@ class Time:
         ]
         return {"jogos": lista_jogos}
 
-    #retorna as n linhas que o usario queira do dataset
+
     def mostraLinhas(self, n):
+        "retorna as n linhas que o usario queira do dataset"
         n = int(n)
         linhas = self.brasil.head(n)
         lista_linhas = [
@@ -123,6 +130,39 @@ class Time:
             "jogos": lista_linhas
         }
 
+    def inserir_dado(self, novo_dado):
+        "Adiciona um novo jogo ao DataFrame"
+        df_novo = pd.DataFrame([novo_dado])
+        self.brasil = pd.concat([self.brasil, df_novo], ignore_index=True)
+        return {"mensagem": "Dado inserido com sucesso", "dado": novo_dado}
+
+    def atualizar_dado(self, indice, dado_atualizado):
+        "Atualiza um jogo existente por índice"
+        if indice < 0 or indice >= len(self.brasil):
+            return {"erro": "Índice inválido"}
+        for chave, valor in dado_atualizado.items():
+            if chave in self.brasil.columns:
+                self.brasil.at[indice, chave] = valor
+        return {"mensagem": "Dado atualizado com sucesso", "dado": self.brasil.iloc[indice].to_dict()}
+
+    def deletar_dado(self, indice):
+        "Remove um jogo por índice"
+        if indice < 0 or indice >= len(self.brasil):
+            return {"erro": "Índice inválido"}
+        dado_removido = self.brasil.iloc[indice].to_dict()
+        self.brasil = self.brasil.drop(index=indice).reset_index(drop=True)
+        return {"mensagem": "Dado deletado com sucesso", "dado": dado_removido}
+
+    def listar_dados(self):
+        "Retorna todos os dados como lista de dicionários"
+        return self.brasil.to_dict(orient='records')
+
+    def filtrar_dados(self, filtros):
+        df_filtrado = self.brasil.copy()
+        for chave, valor in filtros.items():
+            if chave in df_filtrado.columns:
+                df_filtrado = df_filtrado[df_filtrado[chave] == valor]
+        return df_filtrado.to_dict(orient="records")
 
 #print(Time(brasil).total_team_goals("Gremio"))
 #print(Time(brasil).team("Internacional", "Gremio"))
