@@ -1,21 +1,5 @@
-import pandas as pd, numpy as np, matplotlib.pyplot as plt
+import pandas as pd, numpy as np
 
-#filtrar os datasest e possiveis perguntas
-
-#le o dataset
-#brasil = pd.read_csv("DataSets/Brasileirao_Matches.csv")
-#exclui colunas "inuteis", e exclui valores ausentes
-#brasil = brasil.drop(["season", "round"], axis=1).dropna()
-#deixa só ano/mes/dia
-#brasil_ano = brasil["datetime"].map(lambda x: str(x)[:10])
-#deixa só nome do time
-# = brasil[["home_team", "away_team"]].map(lambda x: x[:-3])
-#slado de gols
-#goals = brasil[["home_goal", "home_team_state", "away_goal", "away_team_state"]]
-#junta tudo
-# = pd.concat([brasil_ano, brasil_times, goals], axis=1)
-
-#utilizar np para calcular e o plt para "mostrar" com os metodos para chamar dps
 class Time:
     def __init__(self):
         brasil = pd.read_csv("DataSets/Brasileirao_Matches.csv")
@@ -98,7 +82,7 @@ class Time:
         jogos = self.brasil[(self.brasil['home_team'] == team_name) | (self.brasil['away_team'] == team_name)]
         lista_jogos = [
             {
-                "Adata": i["datetime"],
+                "data": i["datetime"],
                 "casa": i["home_team"],
                 "gols_casa": int(i["home_goal"]),
                 "fora": i["away_team"],

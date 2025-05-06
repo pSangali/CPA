@@ -1,0 +1,255 @@
+{
+	"info": {
+		"_postman_id": "37f5cd00-0e4b-4745-8e5d-945abf69cace",
+		"name": "API",
+		"description": "Coleção de testes para a API de times de futebol.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44658959",
+		"_collection_link": "https://jonatan-5233920.postman.co/workspace/Jonatan's-Workspace~4037a2d6-6cfb-48ac-8699-ad09a8c5b5b3/collection/44658959-37f5cd00-0e4b-4745-8e5d-945abf69cace?action=share&source=collection_link&creator=44658959"
+	},
+	"item": [
+		{
+			"name": "GET /dado",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/dado",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"dado"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /dado",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nome\": \"Brasil\", \"pontos\": 10}"
+				},
+				"url": {
+					"raw": "localhost:5000/dado",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"dado"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /dado/{indice}",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nome\": \"Brasil Atualizado\", \"pontos\": 12}"
+				},
+				"url": {
+					"raw": "localhost:5000/dado/1",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"dado",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /dado/{indice}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/dado/1",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"dado",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /filtrar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"time\": \"Brasil\"}"
+				},
+				"url": {
+					"raw": "localhost:5000/filtrar",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"filtrar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /gols/{time}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/gols/Brasil",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"gols",
+						"Brasil"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /confronto",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/confronto?time1=Brasil&time2=Argentina",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"confronto"
+					],
+					"query": [
+						{
+							"key": "time1",
+							"value": "Brasil"
+						},
+						{
+							"key": "time2",
+							"value": "Argentina"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /estado/{uf}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/estado/RS",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"estado",
+						"RS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /Time/{nomeTeam}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/Time/Brasil",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"Time",
+						"Brasil"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /gols/{n}/valor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/gols/1/valor",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"gols",
+						"1",
+						"valor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /linhas/{n}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/linhas/5",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"linhas",
+						"5"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

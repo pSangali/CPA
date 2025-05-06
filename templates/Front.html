@@ -124,25 +124,25 @@
               url = `/linhas/${encodeURIComponent(campo1)}`;
               break;
             case "listar":
-              url = `/listar`;
+              url = `/dado`;
               break;
           }
         } else if (operacao === "inserir") {
-          url = `/inserir`;
+          url = `/dado`;
           options = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: jsonData
           };
         } else if (operacao === "atualizar") {
-          url = `/atualizar/${campo1}`;
+          url = `/dado/${campo1}`;
           options = {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: jsonData
           };
         } else if (operacao === "deletar") {
-          url = `/deletar/${campo1}`;
+          url = `/dado/${campo1}`;
           options = { method: "DELETE" };
         } else if (operacao === "filtrar") {
           url = `/filtrar`;
@@ -154,10 +154,10 @@
         }
 
         const resposta = await fetch(url, options);
-        const dados = await resposta.json();
-        document.getElementById("resultado").innerText = JSON.stringify(dados, null, 2);
-      } catch (erro) {
-        document.getElementById("resultado").innerText = "Erro na operação: " + erro;
+        const data = await resposta.json();
+        document.getElementById("resultado").textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        document.getElementById("resultado").textContent = "Erro: " + error;
       }
     }
   </script>
