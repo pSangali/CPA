@@ -30,6 +30,8 @@ listar_dados(): Retorna todos os jogos.
 filtrar_dados(filtros): Filtra os dados com base em múltiplos critérios.
 
 
+
+
 **Main.py**
 
 GET /: Página inicial.
@@ -55,6 +57,8 @@ GET /Time/<nomeTeam>: Jogos de um time específico.
 GET /gols/<n>/valor: Jogos com n gols por algum time.
 
 GET /linhas/<n>: Primeiros n jogos do dataset.
+
+
 
 
 **Consumidor.py**
@@ -129,6 +133,8 @@ resposta = requests.get(f"{url_base}/gols/3/valor")
 
 Mostra jogos onde alguém marcou exatamente 3 gols (casa ou visitante).
 
+
+
 **Datasets Utilizados**
 
 Brasileirao_Matches.csv: contém dados de partidas do Campeonato Brasileiro (Série A), incluindo informações como times mandante e visitante, número de gols, estádio, estado, data da partida, entre outros. Esse dataset permite diversas análises como confrontos entre times, total de gols marcados, distribuição de times por estado, e muito mais.
@@ -136,6 +142,8 @@ Brasileirao_Matches.csv: contém dados de partidas do Campeonato Brasileiro (Sé
 Libertadores_Matches.csv: reúne informações de partidas da Copa Libertadores da América, com estrutura semelhante ao dataset do Brasileirão. Ele também traz dados detalhados dos jogos, permitindo comparar desempenhos entre competições, analisar campanhas de times brasileiros na Libertadores, entre outras possibilidades.
 
 Link: https://www.kaggle.com/datasets/ricardomattos05/brazilian-soccer-database?select=Libertadores_Matches.csv
+
+
 
 **Front.html**
 
