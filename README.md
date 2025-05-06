@@ -3,7 +3,7 @@ pip install flask pandas numpy requests matplotlib
 
 2- Explicação dos arquivos:
 
-*FILTRO.py*
+**Filtro.py**
 
 Contém a classe Time, responsável por toda a lógica de filtragem e manipulação de dados:
 
@@ -30,7 +30,7 @@ listar_dados(): Retorna todos os jogos.
 filtrar_dados(filtros): Filtra os dados com base em múltiplos critérios.
 
 
-*MAIN.py*
+**Main.py**
 
 GET /: Página inicial.
 
@@ -57,9 +57,9 @@ GET /gols/<n>/valor: Jogos com n gols por algum time.
 GET /linhas/<n>: Primeiros n jogos do dataset.
 
 
-*CONSUMIDOR.py*
+**Consumidor.py**
 
-AÇÕES REALIZADAS
+**Ações realizadas**
 
 1- Inserir um novo jogo .
 
@@ -129,7 +129,7 @@ resposta = requests.get(f"{url_base}/gols/3/valor")
 
 Mostra jogos onde alguém marcou exatamente 3 gols (casa ou visitante).
 
-*DATASETS*
+**Datasets Utilizados**
 
 Brasileirao_Matches.csv: contém dados de partidas do Campeonato Brasileiro (Série A), incluindo informações como times mandante e visitante, número de gols, estádio, estado, data da partida, entre outros. Esse dataset permite diversas análises como confrontos entre times, total de gols marcados, distribuição de times por estado, e muito mais.
 
@@ -137,7 +137,7 @@ Libertadores_Matches.csv: reúne informações de partidas da Copa Libertadores 
 
 Link: https://www.kaggle.com/datasets/ricardomattos05/brazilian-soccer-database?select=Libertadores_Matches.csv
 
-*FRONT.html*
+**Front.html**
 
 Bem, achamos mais 'divertido' fazer um front em HTML para testar a API de forma visual e interativa.
 Em vez de usar apenas ferramentas como o Postman ou enviar requisições manualmente pelo terminal, quisemos montar algo mais prático e direto.
