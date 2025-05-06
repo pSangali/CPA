@@ -37,8 +37,11 @@ GET /linhas/<n>: Primeiros n jogos do dataset.
 *Consumidor.py*
 
 Ações Realizadas
+
 1- Inserir um novo jogo .
+
 resposta = requests.post(f"{url_base}/inserir", json=novo_jogo)
+
 Envia um jogo no formato JSON para ser adicionado ao dataset da API.
 Dados inseridos:
 {
