@@ -1,4 +1,3 @@
-
 import requests
 import json
 
@@ -14,21 +13,21 @@ novo_jogo = {
     "away_goal": 2,
     "away_team_state": "SP"
 }
-resposta = requests.post(f"{url_base}/inserir", json=novo_jogo)
+resposta = requests.post(f"{url_base}/dado", json=novo_jogo)
 print("Inserir:", resposta.json())
 
 # Listar todos
-resposta = requests.get(f"{url_base}/listar")
+resposta = requests.get(f"{url_base}/dado")
 print("Listar:", json.dumps(resposta.json(), indent=2, ensure_ascii=False))
 
 # Atualizar o primeiro jogo (índice 0)
 dado_atualizado = novo_jogo.copy()
 dado_atualizado["away_goal"] = 3
-resposta = requests.put(f"{url_base}/atualizar/0", json=dado_atualizado)
+resposta = requests.put(f"{url_base}/dado/0", json=dado_atualizado)
 print("Atualizar:", resposta.json())
 
 # Deletar o primeiro jogo (índice 0)
-resposta = requests.delete(f"{url_base}/deletar/0")
+resposta = requests.delete(f"{url_base}/dado/0")
 print("Deletar:", resposta.json())
 
 # Consulta: primeiros 5 jogos
