@@ -1,69 +1,48 @@
 # CPA
 
-*Descrição breve do projeto CPA.*
+*Este repositório contém várias branches que representam diferentes experimentos, features ou versões do projeto.*
+
+## Branches disponíveis
+
+- **`API`**
+  - Focado em implementação ou testes de API.
+  - Arquivos na raiz: API.pdf, API.postman_collection.json, Filtro.py, README.md, consumidor.py, main.py
+
+- **`Dev`**
+  - Branch de desenvolvimento (último trabalho em progresso).
+  - Arquivos na raiz: Aula 08 - Exercício 02 - Coleta de Dados.pdf, README, Untitled.py, aulas.py
+
+- **`Penguins`**
+  - Possivelmente um experimento ou demo relacionado a pinguins (dados, simulação, etc.).
+  - Arquivos na raiz: Aula 13 - Exercício Prático.pdf, Jonatan Giacomini e Pedro Sangali.pdf, README.md, penguins questões.pdf, penguins.ipynb
+
+- **`Titanic`**
+  - Provavelmente um projeto de análise de dados do Titanic (machine learning, visualização).
+  - Arquivos na raiz: README.md, Titaniccode.ipynb, titanic.csv
+
+- **`main`**
+  - Branch principal (versão estável).
+  - Arquivos na raiz: README.md
+
+## Como usar
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/pSangali/CPA.git
+   cd CPA
+   ```
+2. Selecione a branch desejada:
+   ```bash
+   git checkout <nome-da-branch>
+   ```
+3. Verifique o `README` específico da branch (se existir) ou os arquivos de origem para instruções de execução.
+
+## Observações
+
+- Cada branch pode ter dependências diferentes; consulte arquivos como `requirements.txt`, `environment.yml` ou similar.
+- Antes de executar.
+- Para contribuir, crie uma branch a partir da `main` ou da branch relevante e abra um Pull Request.
 
 ---
 
-## Sobre
-
-Breve descrição do que o projeto faz, seu propósito e principais funcionalidades.
-
----
-
-## Funcionalidades
-
-- Funcionalidade 1
-- Funcionalidade 2
-- Funcionalidade 3
-
----
-
-## Requisitos
-
-- Pré-requisito 1
-- Pré-requisito 2
-- Pré-requisito 3
-
----
-
-## Instalação
-
-Passo a passo para instalar e configurar o projeto.
-
-```bash
-# Exemplo de comandos
-git clone https://github.com/pSangali/CPA.git
-cd CPA
-# Instalar dependências
-pip install -r requirements.txt
-```
-
----
-
-## Uso
-
-Como usar o projeto após a instalação.
-
-```bash
-# Exemplo de uso
-python main.py
-```
-
----
-
-## Contribuindo
-
-Se você quiser contribuir com o projeto, siga estas etapas:
-
-1. Faça um fork do repositório
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
-3. Faça commit das suas alterações (`git commit -am 'Adiciona nova feature'`)
-4. Faça push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request
-
----
-
-## Licença
-
-Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
+*README gerado automaticamente com base nas branches do repositório.*
