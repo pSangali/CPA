@@ -1,10 +1,5 @@
 # CPA
 
-![GitHub](https://img.shields.io/github/license/pSangali/CPA)
-![GitHub issues](https://img.shields.io/github/issues/pSangali/CPA)
-![GitHub stars](https://img.shields.io/github/stars/pSangali/CPA)
-![GitHub forks](https://img.shields.io/github/forks/pSangali/CPA)
-
 *Descrição breve do projeto CPA.*
 
 ---
